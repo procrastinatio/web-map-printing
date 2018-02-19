@@ -261,18 +261,34 @@ Approaches
 Client side printing
 --------------------
 * WYSIWIG
+* No complexe template
 * No control of resolution
+
+
+Printing in 2D
+
+!["<ctrl-P> 2D"](img/ctrl-print-2d.png)\
+
+Printing in 3D
+
+!["<ctrl-P> 2D"](img/ctrl-print-3d.png)\
+
 
 
 Server side
 -----------
 
+
 Mixed approach
 --------------
+Some elements are rendered client-side and then sent to the server, or only some operation are done server-side.
 
 
 Integrated approach
 -------------------
+
+Tools like QGis and ArcGIS used to configure the layers. Configuration files, including styles, are used in the web application.
+As both client and server are using the same configuration, printing may be done server-side.
 
 
 
