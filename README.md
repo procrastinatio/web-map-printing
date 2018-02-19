@@ -4,6 +4,8 @@ lang: en
 author: Marc Monnerat
 date: Februar, 9th 2018
 numbersections: true
+fontsize: 10pt
+toc-depth: 3
 output:
   pdf_document:
     toc: true
@@ -144,7 +146,7 @@ Providing a clear delimitation between data which are from the geoportal and whi
 
 Provide the user to give its work a title and notes
 
-###Legend to the map
+### Legend to the map
 
 Some data are more complexe, and need an explanation. It could be as _simple_ as displaying the classification to a full grown geological explanation of the map.
  
@@ -209,50 +211,132 @@ Challenges:
 
 ### Rasterizing/exporting data
 
-* Mapserver
-* Mapnik
+#### Mapserver
+
+[Cartographical Symbol Construction with MapServer][]
+
+Mapserver is hower able to render to vector format like SVG and PDF (when using [PDFlib][])
+
+#### Mapnik
+
+Map Markup Language file) is a YAML or JSON
+Mapnik XML, Cascadenik MML, Carto MML 
+[Mapnik][] was the original tool to generate [OSM][] tiles for the so-called slippy map. Mapnik is also able to genrate PDF when compiled with [Cairo][].
+
+It uses [Mapnik XML][] as configuration, also for styles. [Cascading Sheets Of Style for Mapnik][Cascadenik] aka [Cascadenik][] is a preprocessor for Mapnik, using cascading style sheet for map definition.
+ 
+[CartoCSS] is a language for map design. It is similar in syntax to CSS, but builds upon it with specific abilities to filter map data and by providing things like variables. It targets the Mapnik renderer and is able to generate Mapnik XML or a JSON variant of Mapnik XML.
+
+It is now deprecated ([The end of CartoCSS]) by its parent company, [Mapbox][].
+
+#### Tileserver GL
+
+A [Mapbox Style Specification][] is a document that defines the visual appearance of a map: what data to draw, the order to draw it in, and how to style the data when drawing it. A style document is a JSON object with specific root level and nested properties. This specification defines and describes these properties.
+
+
+Vector and raster maps with GL styles. Server side rendering by Mapbox GL Native. Map tile server for Mapbox GL JS, Android, iOS, Leaflet, OpenLayers, GIS via WMTS, 
+[Tileserver GL](https://tileserver.readthedocs.io/en/latest/)
+
+
+
 * GDAL/Rasterio
 * OWSlib
 
+
+
+
+
+
+
+
 Print server
 ------------
-* Mapfish print
-* Geoserver print
 
+### Mapfish print
+
+The purpose of [Mapfish Print 3] is to create reports that contain maps (and map related components) within them.
+The project is a Java based servlet/library/application based on the mature [Jasper Reports Library][].
+
+### Geoserver print
+
+The [Geoserver Printing Module][] allows easy hosting of the Mapfish printing service within a GeoServer instance. The Mapfish printing module provides an HTTP API for printing that is useful within JavaScript mapping applications. User interface components for interacting with the print service are available from the Mapfish and GeoExt projects.
 
 Integrated print tools
 ----------------------
 
 Need more testing...
 
-* QGIS print
-* ArcGis print
+
+### QGIS print
+
+### ArcGis print
+
+ArcGIS Enterprise includes a geoprocessing service called PrintingTools. Web applications invoke the PrintingTools service and get a printable document in return (see [Printing in Web application][]):
+
+
  
 
-Other consideration
-===================
+Other considerations
+====================
 
-* Scale and resolution of result
+## Scale and resolution
+Are scale and print quality of the result important?
+
 * WebGL
-* Vectors in PDF
-* PDF/A
-* Legacy client (provide raster tiles)
-* Vector style definition
-* Mashup with other sorts of infos (diagram, plot, data tables)
-* Movie (Zeitreise, Fly along path, etc.)
-* Externalize compute power on client
-* Performance (sync or async printing)
-* WYSIWIG (symbol scaling, which LK to use)
-* Grid
-* Projection issue (projection of the data, target projection) --> deformation, scale, etc.
-* Rasterize as a data protection tool
+
+## Vectors in PDF
+Must vector layers rendered as vector or must be rasterized?
+
+## PDF standard
+Support of PDF/2 or PDF/A? No, open source library available. See [PDFlib][]
+
+## Legacy client
+For some legacy client, we must eventually also provide raster tiles (from vector layer)?
+
+## Vector style definition
+
+How are the styles for vector layer defined? Where? And how it is applied?
+
+## Mashup
+Maps should be mashed up with other sorts of infos (diagram, plot, data tables)
+
+## Movie
+Zeitreise, Fly along path, etc.
+
+## Compute powser
+
+Externalize compute power on client or not?
+
+## Performance
+Synchronous or asynchronous printing
+
+## WYSIWIG
+Symbol scaling, which LK to use, grid display, etc.
+
+## Grid
+Grid for various projection system
+
+## Projection issue
+
+Using the same projection for printing as in the browser (projection of the data, target projection). When using a Webmercator, deformation, scale, with LK
+
+## Rasterize as a data protection tool
+
 * High contrast map
-* Export to other format
-* Use on smartphone and tablet
-* Ineractive application/API
-* Multserver use, autoscaling, etc.
-* KMZ with local file
-* GeoPDF
+
+## Export to other format
+Only PDF, os as image
+
+## Use on smartphone and tablet
+
+## Printing API
+Provinding an API for 3rd party
+
+## Multiserver use, autoscaling, etc.
+
+## KMZ with local file
+
+## GeoPDF
 
 
 Approaches
@@ -291,6 +375,33 @@ Tools like QGis and ArcGIS used to configure the layers. Configuration files, in
 As both client and server are using the same configuration, printing may be done server-side.
 
 
+Discussion
+==========
+
+
+Conclusion
+==========
+
+
+
+
+[OSM]: https://www.openstreetmap.org/ "OpenStreetMap"
+[Mapserver]: http://mapserver.org/
+[Cartographical Symbol Construction with MapServer]: http://mapserver.org/mapfile/symbology/construction.html
+[Mapnik]: http://mapnik.org/
+[Mapnik XML]: https://github.com/mapnik/mapnik/wiki/XMLConfigReference
+[Cascadenik]: https://github.com/mapnik/Cascadenik
+[Mapbox Style Specification]: https://www.mapbox.com/mapbox-gl-js/style-spec/
+[The end of CartoCSS]: https://blog.mapbox.com/the-end-of-cartocss-da2d7427cf1
+[CartoCSS]: https://cartocss.readthedocs.io/en/latest/
+[Mapbox]: https://www.mapbox.com
+[Cairo]: https://cairographics.org/
+[PDFlib]: https://www.pdflib.com/
+[MapFish Print 2]: http://www.mapfish.org/doc/print/
+[MapFish Print 3]: https://mapfish.github.io/mapfish-print-doc/#/overview
+[Jasper Reports Library]: https://community.jaspersoft.com/project/jasperreports-library
+[Geoserver Printing Module]: http://docs.geoserver.org/latest/en/user/extensions/printing/index.html
+[Printing in Web application]: https://enterprise.arcgis.com/en/server/latest/create-web-apps/windows/printing-in-web-applications.htm 
 
 **Colophon**
 
