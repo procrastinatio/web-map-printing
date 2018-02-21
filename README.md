@@ -1,10 +1,17 @@
 ---
 title: "Web map printing solutions"
+subtitle:
+    - This is a test for using YAML for metadata.
 lang: en
-author: Marc Monnerat
+keywords:  "web mapping, printing, pdf, canvas, webgl"
+author:
+   - Marc Monnerat
 date: Februar, 9th 2018
 numbersections: true
 fontsize: 10pt
+mainfont: "Noto Serif"
+monofont: "Noto Mono"
+monofontoptions: [ Scale=0.7, Colour=AA0000, Numbers=Lining, Numbers=SlashedZero, ]
 toc-depth: 3
 output:
   pdf_document:
@@ -235,7 +242,7 @@ A [Mapbox Style Specification][] is a document that defines the visual appearanc
 
 
 Vector and raster maps with GL styles. Server side rendering by Mapbox GL Native. Map tile server for Mapbox GL JS, Android, iOS, Leaflet, OpenLayers, GIS via WMTS, 
-[Tileserver GL](https://tileserver.readthedocs.io/en/latest/)
+[Tileserver GL]
 
 
 
@@ -282,13 +289,17 @@ Other considerations
 ## Scale and resolution
 Are scale and print quality of the result important?
 
-* WebGL
+## WebGL
 
 ## Vectors in PDF
 Must vector layers rendered as vector or must be rasterized?
 
+## Need for User defined style
+
+With vector data, it is easy to apply user defined style, though defining styles for complexes dataset is a daring undertaking.
+
 ## PDF standard
-Support of PDF/2 or PDF/A? No, open source library available. See [PDFlib][]
+Support of PDF/2 or PDF/A? No, open source library available. See [PDFlib][].  Not possible in the client
 
 ## Legacy client
 For some legacy client, we must eventually also provide raster tiles (from vector layer)?
@@ -297,13 +308,20 @@ For some legacy client, we must eventually also provide raster tiles (from vecto
 
 How are the styles for vector layer defined? Where? And how it is applied?
 
+Currently, all style are defined in Mapserver's [Mapfile definition](https://github.com/geoadmin/wms-mapfile_include).
+
+## Complexe symbols
+
+Especially complexe labels placement is hard (what to render, at what scale, collision avoidance)
+
 ## Mashup
+
 Maps should be mashed up with other sorts of infos (diagram, plot, data tables)
 
 ## Movie
 Zeitreise, Fly along path, etc.
 
-## Compute powser
+## Compute power
 
 Externalize compute power on client or not?
 
@@ -318,11 +336,12 @@ Grid for various projection system
 
 ## Projection issue
 
+One selling point of vector tiles and 3D is that 2D in only a special case when pitch is 0 (or 90°). But the 3D world is a WGS1984 only world, which translate in the infamous [Equirectangular (or plate carrée)projection ](http://proj4.org/projections/eqc.html).
 Using the same projection for printing as in the browser (projection of the data, target projection). When using a Webmercator, deformation, scale, with LK
 
 ## Rasterize as a data protection tool
 
-* High contrast map
+Rasterizing vector data was also a way to _protect_ the more valuable original vector datasets (_e.g._WMS).
 
 ## Export to other format
 Only PDF, os as image
@@ -344,9 +363,6 @@ Approaches
 
 Client side printing
 --------------------
-* WYSIWIG
-* No complexe template
-* No control of resolution
 
 
 Printing in 2D
@@ -358,6 +374,56 @@ Printing in 3D
 !["<ctrl-P> 2D"](img/ctrl-print-3d.png)\
 
 
+### CSS: @media print
+
+### Popup
+
+HTML template for printing
+
+### PDF generation in client
+
+[PDF.js] (Open Source) and [jsPDF] (commercial), [PSPDFKit] (comercial)
+
+
+
+### Examples
+
+[Mapbox GL](https://www.procrastinatio.org/print-maps/) using [print-maps](https://github.com/mpetroff/print-maps) by Matthew Petroff.
+
+[Cesium and swisstopo terrain](https://codepen.io/procrastinatio/full/c9fbe1b5f412adac74ee0944fd975511/)
+
+
+### Discussions
+
+#### Browser support
+
+#### Workload is offloaded to clients
+
+#### Raster only
+
+Raster only, but smaller images
+
+#### WYSIWIG (or almost)
+
+#### No special code for rendering
+
+#### Resolution
+
+Basically, your get the canvas at dispostion. Some are trying to get a lager image by recreating a large hidden map canvas. It may work in 2D, but will consume much resource in 2D. Remember, A4 at 150 dpi is 1750x 1250px, and A3 at 150 DPI is 1750x2480px.
+
+#### Templating
+
+#### Performance
+
+Hard to find when the page is fully rendered...
+
+#### Security
+
+Cross-Origin Resource Sharing (CORS) and Content-Security-Policy (CSP) 
+
+### Conclusion
+
+If the added value is not much more than what a screenshot offers, there not point to provide this functionality
 
 Server side
 -----------
@@ -383,7 +449,13 @@ Conclusion
 ==========
 
 
+[PDF.js]: https://mozilla.github.io/pdf.js/
+[jsPDF]: https://parall.ax/products/jspdf
+[PSPDFKit]: https://pspdfkit.com/pdf-sdk/web/
 
+[print-maps]: https://github.com/mpetroff/print-maps
+
+[Tileserver GL]: http://tileserver.org/
 
 [OSM]: https://www.openstreetmap.org/ "OpenStreetMap"
 [Mapserver]: http://mapserver.org/
