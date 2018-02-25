@@ -5,7 +5,7 @@ doc: web-map-printing.pdf
 web-map-printing.pdf: README.md
 	pandoc  -f markdown   --pdf-engine=xelatex  \
 	-o "web-map-printing.pdf"   \
-	  -V fontsize=10pt  --variable classoption=twocolumn --variable papersize=a4paper  --variable mainfont="Noto Serif"  "README.md" 
+	  -V fontsize=10pt  -V geometry:a4paper --variable classoption=onecolumn --variable papersize=a4paper  -V papersize:a4 --variable mainfont="Noto Serif"  "README.md" 
 
 .PHONE: clean
 clean:
