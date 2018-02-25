@@ -7,6 +7,7 @@ keywords:  "web mapping, printing, pdf, canvas, webgl"
 author:
    - Marc Monnerat
 date: Februar, 9th 2018
+papersize: a4
 numbersections: true
 fontsize: 10pt
 mainfont: "Noto Serif"
@@ -186,6 +187,9 @@ Tools, building bricks
 Browser
 -------
 
+
+### @media print
+
 ### Rasterizing
 
 HTML5, _toBlob()_, _toDataURL()_
@@ -248,11 +252,6 @@ Vector and raster maps with GL styles. Server side rendering by Mapbox GL Native
 
 * GDAL/Rasterio
 * OWSlib
-
-
-
-
-
 
 
 
@@ -361,8 +360,8 @@ Provinding an API for 3rd party
 Approaches
 ==========
 
-Client side printing
---------------------
+CSS: @media print
+-----------------
 
 
 Printing in 2D
@@ -374,15 +373,67 @@ Printing in 3D
 !["<ctrl-P> 2D"](img/ctrl-print-3d.png)\
 
 
-### CSS: @media print
+### Browser print function
 
-### Popup
+Easiest solution, used by Google Map, Bing Map. WYSIWIG
 
-HTML template for printing
+All it takes is to define a CSS stylesheed for print (for inspiration [Paper CSS][]).
+
+A CSS at-rule [\@page](https://drafts.csswg.org/css-page-3/) to define page-specific rules when printing web pages, such as margin per page and page dimensions. Not supported by Safari (all versions). 
+
+
+    page[size="A4"][layout="landscape"]  {
+        width: 21cm;
+        height: 29.7cm; 
+    }
+
+But, as we do not have any influence on the size of the image generated in the browser, we have to make trade off in term of scale, print resolution and image aspect ratio.
+To print at 150dpi on A4, we need an image of 1750x1250 pixel approximatly, which is OK on a deskop computer, but probably not on a laptop or tablet.
+
+Canvas of 650x450px not fitting an A4 page
+
+!["Too small image for A4"](img/browser-print-image-650x450.png)\
+
+Canvas of 1050x750px fitting an A4 page
+
+!["Perfect match for A4"](img/browser-print-image-1050x750.png)\
+
+A bigger display will be cropped
+
+Challenge: print to many different paper sizes and orientations
 
 ### PDF generation in client
 
 [PDF.js] (Open Source) and [jsPDF] (commercial), [PSPDFKit] (comercial)
+
+
+### Rendering PDF on a server
+
+[Generating PDF from XML/HTML and CSS - A tutorial and showcase for CSS Paged Media][Print-CSS]
+
+[Print CSS rocks](https://github.com/zopyx/print-css-rocks)
+
+
+Rendering HTML page to PDF using the full CSS Page media standard with commercial tool like [PDFreactor][], [PrinceXML][], [Antennahouse CSS Formatter][] or [DocRaport][]. Some are based on [XSL-FO][] other on [Webkit][].
+
+
+Export canvas as image
+----------------------
+
+### Export canvas as image
+
+
+### Export image + popup
+
+
+Create a simple page in a new popup window, with additional elements, and copy the map as an image
+HTML template for printing
+
+### Better resolution
+
+An approach to gain control over the generated image is to recreate a hidden canvas to generate an image that suit the need. This is the approach of the "High DPI print" for Mapbox ([print-maps][]).
+
+Maybe OK, for simple 2D applications, more difficult for complexe 3D applications with user defined content. What about performance ?
 
 
 
@@ -392,8 +443,15 @@ HTML template for printing
 
 [Cesium and swisstopo terrain](https://codepen.io/procrastinatio/full/c9fbe1b5f412adac74ee0944fd975511/)
 
+[OL-Cesium](https://www.procrastinatio.org/ol-cesium/) in 2D and 3D mode
+
+!["Too small image for A4"](img/ol4-cesium-export-png.png)\
+
 
 ### Discussions
+
+
+#### Shortlinks
 
 #### Browser support
 
@@ -407,9 +465,81 @@ Raster only, but smaller images
 
 #### No special code for rendering
 
-#### Resolution
+If we considere CSS is no code, yes...
+
+#### Resolution, aspect ratio, screen size, pixel density
 
 Basically, your get the canvas at dispostion. Some are trying to get a lager image by recreating a large hidden map canvas. It may work in 2D, but will consume much resource in 2D. Remember, A4 at 150 dpi is 1750x 1250px, and A3 at 150 DPI is 1750x2480px.
+
+Pixel density
+
+A paper map is read at 25cm, screen at 50-70cm 14'' and 75 - 105 cm for 20/21''
+The maximal resolution is about 300 dpi at 25cm, 152 dpi at 50cm and 76 dpi at 100cm
+
+
+ Paper                96 dpi     150 dpi     300 dpi
+-----------------   --------  ----------   -------
+   A5 (210x148mm)    793x563    1240x880    2408x1760
+   A4 (297x210mm)    1112x793   1753x1240   3507x2408
+   A3 (420x297mm)    1587x1112  2408x1753   4360x3507
+
+Table:  Relation between paper size (mm) and image size (pixels). _dpi_ (dot per inch)
+
+
+##### Conserving the scale
+
+The next three images have the same spatial extent (2500 meters wide), but have different sizes. If we want to keep the scale, here 1:25'000, we have to print an image of 100mm, regardless of the size of the image. The result is a low quality for samller image.
+
+
+*Image of 377x188 pixels, printed @96 dpi (100x50mm)*
+
+!["90th, 95th and 99th percentile of created.json"](img/pk25.noscale-377-188-@96.png){ width=100mm }\
+
+*Image of 590x295 pixels, printed @150 dpi (100x50mm)*
+
+!["90th, 95th and 99th percentile of created.json"](img/pk25.noscale-590-295-@150.png){ width=100mm }\
+
+*Image of 1181x590 pixels, printed @300 dpi (100x50mm)*
+
+!["90th, 95th and 99th percentile of created.json"](img/pk25.noscale-1181-590-@300.png){ width=100mm }\
+
+##### Conserving the print resolution
+
+The next three images have the same spatial extent (2500 meters wide), but have different sizes. In this example, we kee a good print quality (300 dpi), so we have to print .
+The result is loosing the original map scale of 1:25'000.
+
+*Image of 377x188 pixels, printed @300 dpi (32x16 mm), print scale is about 1:78'125*
+
+!["90th, 95th and 99th percentile of created.json"](img/pk25.noscale-377-188-@96.png){ width=32mm }\
+
+*Image of 590x295 pixels, printed @300 dpi dpi (50x25 mm), print scale is 1:50'000*
+
+!["90th, 95th and 99th percentile of created.json"](img/pk25.noscale-590-295-@150.png){ width=50mm }\
+
+*Image of 1181x590 pixels, printed @300 dpi (100x50mm), print scale is 1:25'000*
+
+!["90th, 95th and 99th percentile of created.json"](img/pk25.noscale-1181-590-@300.png){ width=100mm }\
+
+
+##### Effect of style
+
+In this example we use the _Landeskarte/Pixelkarte_ because their style is targeted for a very specific scale: 1:10'000, 1:25'000 and 1:50'000.
+The three following picture are printed at 300dpi for a scale of 1:25'000. 
+
+*LK10, designed for 1:10'000*
+Labels and features are very small, hard to read.
+
+!["90th, 95th and 99th percentile of created.json"](img/lk10.noscale-1181-590-@300.png){ width=100mm }\
+
+*PK25, designed for 1:25'000*
+Labels and features are easily readable, making a joyful impression.
+
+!["90th, 95th and 99th percentile of created.json"](img/pk25.noscale-1181-590-@300.png){ width=100mm }\
+
+*PK50, designed for 1:50'000*
+Features and labels are big. You may clearly have more information.
+
+!["90th, 95th and 99th percentile of created.json"](img/pk50.noscale-1181-590-@300.png){ width=100mm }\
 
 #### Templating
 
@@ -441,6 +571,11 @@ Tools like QGis and ArcGIS used to configure the layers. Configuration files, in
 As both client and server are using the same configuration, printing may be done server-side.
 
 
+[QGis Print Composer][]
+
+
+
+
 Discussion
 ==========
 
@@ -449,11 +584,20 @@ Conclusion
 ==========
 
 
+[Print-CSS]: https://print-css.rocks/
+
 [PDF.js]: https://mozilla.github.io/pdf.js/
 [jsPDF]: https://parall.ax/products/jspdf
 [PSPDFKit]: https://pspdfkit.com/pdf-sdk/web/
 
+[PDFreactor]: http://www.pdfreactor.com
+[PrinceXML]: http://www.princexml.com
+[Antennahouse CSS Formatter]: http://www.antennahouse.com
+[DocRaport]: https://docraptor.com/
+
 [print-maps]: https://github.com/mpetroff/print-maps
+
+[Paper CSS]: https://github.com/cognitom/paper-css
 
 [Tileserver GL]: http://tileserver.org/
 
@@ -474,6 +618,10 @@ Conclusion
 [Jasper Reports Library]: https://community.jaspersoft.com/project/jasperreports-library
 [Geoserver Printing Module]: http://docs.geoserver.org/latest/en/user/extensions/printing/index.html
 [Printing in Web application]: https://enterprise.arcgis.com/en/server/latest/create-web-apps/windows/printing-in-web-applications.htm 
+
+[QGis Print Composer]: https://docs.qgis.org/testing/en/docs/user_manual/print_composer/overview_composer.html
+[Webkit]: https://webkit.org/
+[XSL-FO]: https://www.w3.org/TR/xsl/
 
 **Colophon**
 
