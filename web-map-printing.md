@@ -6,7 +6,7 @@ lang: en
 keywords:  "web mapping, printing, pdf, canvas, webgl"
 author:
    - Marc Monnerat
-date: Februar, 9th 2018
+
 papersize: a4
 numbersections: true
 fontsize: 10pt
@@ -40,7 +40,7 @@ header-includes:
 **Abstracts**
 
 
-_This document explores various alternatives for generating suitable document for printing to be used in a web mapping application._
+_This document explores various alternatives for generating suitable document for printing to be used in a web mapping application. _
 
 
 Current situation
@@ -52,7 +52,7 @@ The swiss federal geoportal [map.geo.admin.ch](https://map.geo.admin.ch) uses a 
 
 * Printing all 2D layers from map.geo.admin.ch, including import GPX/KML and most WMTS/WMS 
 * Generating an A4/A3 PDF 1.3 at 150 DPI (not a technical limitation)
-* Generating a multipage PDF for Zeitreise (one year per page)
+* Generating a multipage PDF for Zeitreise (one year per page, about 20 pages)
 * Synchronous print for single page, asynchronous for multipage
 * 247'198 PDF page generated the last 90 days (500-5'000 per day) and 1'383 multipage print (0 to 50 per day)
 * Dockerized application running on a auto-scaling cluster (time-based)
@@ -63,11 +63,12 @@ The swiss federal geoportal [map.geo.admin.ch](https://map.geo.admin.ch) uses a 
 ## Shortcomings
 
 * Print only 2D map
-* Imported WMS and WMTS layers won't be printed if remote server do not support LV95 projection (EPSG:2056).
+* Imported WMS and WMTS layers won't be printed if remote server do not support LV95 projection (EPSG:2056). These layers may be still displayed in the application
 * WMTS layers are added as indivual tiles to PDF, for every layers (way too much information if some layer are fully opaque) 232 MB for Zeitreise only, 376MB (25 pages)
-* Very limited support for Vector. Luckily, imported vector do not support many style
+* Very limited support for Vector. Luckily, imported vector do not support many styles.
 * Symbols size for Raster layer (Vector symbol are adapted to print resolution)
 * MapFish v2 is not developped anymore. swisstopo is patching a fork.
+* Support for retry and multiserver is sub-optimal.
 
 ## Performances
 
@@ -363,14 +364,13 @@ Approaches
 CSS: @media print
 -----------------
 
+[\@media in MDN web docs](https://developer.mozilla.org/de/docs/Web/CSS/@media)
 
-Printing in 2D
+ 
+> The @media CSS at-rule associates a set of nested statements, in a CSS block
+> that is delimited by curly braces, with a condition defined by a media query.
+> The @media at-rule may be use
 
-!["<ctrl-P> 2D"](img/ctrl-print-2d.png)\
-
-Printing in 3D
-
-!["<ctrl-P> 2D"](img/ctrl-print-3d.png)\
 
 
 ### Browser print function
@@ -400,7 +400,17 @@ Canvas of 1050x750px fitting an A4 page
 
 A bigger display will be cropped
 
-Challenge: print to many different paper sizes and orientations
+With a map covering the whole screen (`width: 100%; height: 100%`), the challenge is to get an absolute width and height, to be fitted in the print page.
+
+Challenges
+
+* Print to many different paper sizes and orientations
+* Make browser recognize size and orientation
+* Print quality, on smaller display _e.g._ Laptop with 14" screen
+
+Works well on Chrome, Firefox and Opera (only 2D for the latter), when preview is activated.
+
+[Live demo](https://www.procrastinatio.org/ol-cesium/full.html)
 
 ### PDF generation in client
 
@@ -421,6 +431,18 @@ Export canvas as image
 ----------------------
 
 ### Export canvas as image
+
+
+Printing in 2D
+
+!["<ctrl-P> 2D"](img/ctrl-print-2d.png)\
+
+Printing in 3D
+
+!["<ctrl-P> 2D"](img/ctrl-print-3d.png)\
+
+
+[Live demo](https://www.procrastinatio.org/ol-cesium/). This is [OL-Cesium][], you may toggle 2D/3D.
 
 
 ### Export image + popup
@@ -453,15 +475,24 @@ Maybe OK, for simple 2D applications, more difficult for complexe 3D application
 
 #### Shortlinks
 
+Mabe useful to recreate the application elsewhere, when needed.
+
 #### Browser support
 
+But 3D and WebGL is forcing to use modern browsers.
+
 #### Workload is offloaded to clients
+
+No more server
 
 #### Raster only
 
 Raster only, but smaller images
 
-#### WYSIWIG (or almost)
+#### WYSIWIG
+
+Especially in Chrome with the print preview function, the user sees exactly what is going to be printed. A print preview may also be impletemented for other browser.
+
 
 #### No special code for rendering
 
@@ -469,12 +500,15 @@ If we considere CSS is no code, yes...
 
 #### Resolution, aspect ratio, screen size, pixel density
 
-Basically, your get the canvas at dispostion. Some are trying to get a lager image by recreating a large hidden map canvas. It may work in 2D, but will consume much resource in 2D. Remember, A4 at 150 dpi is 1750x 1250px, and A3 at 150 DPI is 1750x2480px.
+Basically, your get the canvas at dispostion and try to fit in an A4 page. A small screen means a poors print quality, while a large screen means a decent or good print quality.
+
+Some are trying to get a lager image by recreating a large hidden map canvas. It may work in 2D, but will consume much resource in 2D. Remember, A4 at 150 dpi is 1750x 1250px, and A3 at 150 DPI is 1750x2480px.
 
 Pixel density
 
 A paper map is read at 25cm, screen at 50-70cm 14'' and 75 - 105 cm for 20/21''
-The maximal resolution is about 300 dpi at 25cm, 152 dpi at 50cm and 76 dpi at 100cm
+The maximal resolution is about 300 dpi at 25cm, 152 dpi at 50cm and 76 dpi at 100cm. So while a resolution of about 100dpi is acceptable on a desktop, 
+it makes no sense to print above 300dpi for instance.
 
 
  Paper                96 dpi     150 dpi     300 dpi
@@ -598,6 +632,8 @@ Conclusion
 [print-maps]: https://github.com/mpetroff/print-maps
 
 [Paper CSS]: https://github.com/cognitom/paper-css
+
+[OL-Cesium]: http://openlayers.org/ol-cesium/
 
 [Tileserver GL]: http://tileserver.org/
 
