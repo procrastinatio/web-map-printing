@@ -461,6 +461,10 @@ Maybe OK, for simple 2D applications, more difficult for complexe 3D application
 
 ### Examples
 
+[Browser print](demo/a4-fitted-size-landscape.html)
+
+[Browser print](demo/a4-fixed-size-landscape.html)
+
 [Mapbox GL](https://www.procrastinatio.org/print-maps/) using [print-maps](https://github.com/mpetroff/print-maps) by Matthew Petroff.
 
 [Cesium and swisstopo terrain](https://codepen.io/procrastinatio/full/c9fbe1b5f412adac74ee0944fd975511/)
@@ -468,6 +472,9 @@ Maybe OK, for simple 2D applications, more difficult for complexe 3D application
 [OL-Cesium](https://www.procrastinatio.org/ol-cesium/) in 2D and 3D mode
 
 !["Too small image for A4"](img/ol4-cesium-export-png.png)\
+
+[Leaflet Easy Print](https://github.com/rowanwins/leaflet-easyPrint)
+[Demo](https://www.procrastinatio.org/leaflet-print/)
 
 
 ### Discussions
