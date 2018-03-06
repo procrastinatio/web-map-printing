@@ -43,6 +43,10 @@ header-includes:
 _This document explores various alternatives for generating suitable document for printing to be used in a web mapping application. _
 
 
+!["XEROX Parc Map Viewer"](img/xerox_parc_map_viewer_june_1993.jpg){ width=250px }\
+
+
+
 Current situation
 =================
 
@@ -581,6 +585,25 @@ Labels and features are easily readable, making a joyful impression.
 Features and labels are big. You may clearly have more information.
 
 !["90th, 95th and 99th percentile of created.json"](img/pk50.noscale-1181-590-@300.png){ width=100mm }\
+
+### PDF compression
+
+Compression with jsPDF of an A4 PDF page containing a single image of 12'236'896 bytes (pk25.noscale-3271-2244-@300.png)
+
+The following compressions are tested: `NONE`, `FAST`, `MEDIUM` and `SLOW`. For comparison, the uncompressed PDF file has been
+compressed with `ps2pdf`. Five repetitions for each methods.
+
+
+Compression          Time (s)       PDF (bytes)    Size (%)
+-------------      -----------     -------------  ---------
+NONE                 6.99 ± 0.10     29363689       100%
+FAST                 8.84 ± 0.08     11978739        40.8%
+MEDIUM              11.61 ± 0.41     11282507        38.4%
+SLOW                67.91 ± 2.37     10469602        35.6%
+ps2pdf              < 1s              1227882         4.18%
+
+
+
 
 #### Templating
 
