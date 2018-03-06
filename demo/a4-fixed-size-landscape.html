@@ -1,0 +1,56 @@
+
+<head>
+
+ <style>
+ @media screen {
+   .page { margin: 20px;
+   }
+
+ }
+@media print {
+html,body{height:100%;width:100%;margin:0;padding:0;}
+ @page {
+	size: A4 landscape;
+	max-height:100%;
+	max-width:100%
+	}
+
+   img {
+	width:200mm;
+	height:100mm;
+	display:block;
+	}
+
+    }
+
+     h1 { font-size: 1em}
+     h2 { display: none; }
+     div.page, div.appendix {
+    page-break-after: always;
+}
+}
+</style>
+</head>
+
+<body>
+<h1>A4 Landscape 96dpi</h1>
+<h2>Printing</h2>
+<div class="book">
+    <div class="page">
+        <div class="title">Image 755x377px - 96dpi if width is 200m </div>
+        <div id="map"><img class="fixed" src="../img/pk25.noscale-377-188-@96.png" /></div>
+    </div>
+    <div class="page">
+     <div class="title">Image 1181x590 - 150dpi if width is 200m </div>
+        <div id="map"><img  lass="fixed" src="../img/pk25.noscale-590-295-@150.png" /></div>
+    </div>
+    <div class="page">
+     <div class="title">Image 72362x1181px - 300dpi if width is 200m </div>
+        <div id="map"><img class="fixed"  src="../img/pk25.noscale-1181-590-@300.png" /></div>
+    </div>
+
+
+
+</div>
+
+</body>
