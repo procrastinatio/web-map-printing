@@ -90,7 +90,7 @@ Error rate: last month 1'082 errors for 97'988 success (about 1.09%)
 
 Printing a [standard A4 landscape page at 1:25'000](https://github.com/procrastinatio/mapfish-print-examples/blob/master/specs/lv95_versoix_25000_simple.json)
 
-Generation time (POST to json response): 1.21 ± 0.05 s (n=4578, every 5 minutes)
+Generation time (POST to json response): 1.21 ? 0.05 s (n=4578, every 5 minutes)
 
 Errors: 22 out of 4578 jobs (0.48%) 
 
@@ -111,16 +111,16 @@ What is printing?
 ================
 
 In the context on web mapping application, printing is generally seen as as a way to generate a file, like an image or a PDF, suitable to be sent to an office printer.
-But even in this context, some people may primarly interested in the PDF file, not a paper impression. This is a huge difference.
+But even in this context, some people may primarly interested in the PDF file, for instance for archiving or offile use, not a paper impression.
 
-This is a bit restrictive, as PDF file may be also saved for offline use. The advent of 3D data and application, also brings new possiblities and challenges.
+The advent of 3D data and 3D capable application as well as the generalisation of vector data also brings new possiblities and challenges for printing.
 
 
 
 What should be printed?
 ======================
 
-Since its inception, maps have been decorated with more or less useful features.
+Since their inceptions, maps have been decorated with more or less useful features.
 
 !["Îles du Levant - Portulan Benincase 1466 (BNF)"](img/Ile_du_Levant_Portulan_Benincasa_1466.png){width=250px}\
 
@@ -130,14 +130,17 @@ Since its inception, maps have been decorated with more or less useful features.
 Map data
 --------
 
+In the GIS world, 
+
 ### 2D
 
 #### Raster
-Source are generally satelite/aerial imagery, and scan of legacy maps (historical maps)
-Served usually as WMS and WMTS
+Source are generally satelite/aerial imagery, and scan of legacy (printed) maps (historical maps)
+Served usually served as OGC WMS and WMTS
 
 #### Vector
-Vector are now a few layer as GeoJSON, and imported GPX and KML
+
+In [map.geo.admin.ch][], there are now about 22 vector layers, loaded as GeoJSON (_e.g._ [Water temperature river](https://map.geo.admin.ch/?lang=en&topic=ech&bgLayer=ch.swisstopo.pixelkarte-farbe&layers=ch.bafu.hydroweb-messstationen_temperatur). Vector files like GPX and KML may also be imported.
 
 Question: rasterize data to print seems obvious, but it is definitely a loss of information.
 
@@ -170,35 +173,46 @@ Important or not, it gives a professinal look
 
 ### Disclaimer/copyright
 
-Providing a clear delimitation between data which are from the geoportal and which data are 3rd party. Some remainder of copyright use.
+Providing a clear delimitation between data which are from the geoportal and which data are 3rd party. Some reminder of copyright use.
+
 
 ### Title, note by user
 
 Provide the user to give its work a title and notes
 
+
 ### Legend to the map
 
-Some data are more complexe, and need an explanation. It could be as _simple_ as displaying the classification to a full grown geological explanation of the map.
+Some data are more complexe, and need an explanation. It could be as _simple_ as displaying the classification or add a complexe an lengthy explanation in the case of a geocolical map to the generated PDF.
  
-### Scale, scalebar, norh arrow
+ 
+### Scale, scalebar, north arrow
+
 Useful information for the orientation, and when hiking.
 
+
 ### QRcode, shortlink
+
 Useful to recreate the map in the application online
 
 ### Table data (reporting)
-Some infomarmation be easier to display as table. Not used in map.geo.admin.ch, but proposed by some printing application
+
+Some information be easier to display as table. Not used in [map.geo.admin.ch][], but proposed by some printing application (
+
 
 ### File metadata (if applicable)
+
 Metadata are something useful for search engine if the main goal is to store the PDF.
 
+
 ### Grid
+
 Various geographical grids, for orientation and use with GPS.
 
+
 ### Information on elements displayed
-Could be the location of a search term in the simpliest form or additional information on a highlighted object (tooltips,etc.)
 
-
+Could be the location of a search term in the simpliest form (Google Map-like marker) or additional information on a highlighted object (tooltips,etc.)
 
 
 
@@ -271,9 +285,11 @@ Vector and raster maps with GL styles. Server side rendering by Mapbox GL Native
 [Tileserver GL]
 
 
+### Other tools
 
-* GDAL/Rasterio
-* OWSlib
+#### GDAL/Rasterio
+
+#### OWSlib
 
 
 
@@ -308,22 +324,32 @@ Other considerations
 ====================
 
 ## Scale and resolution
-Are scale and print quality of the result important?
+
+Are scale and print quality of the result important? Difference in resolution may be important between screen and paper.
+
 
 ## WebGL
 
+
 ## Vectors in PDF
+
 Must vector layers rendered as vector or must be rasterized?
+
 
 ## Need for User defined style
 
 With vector data, it is easy to apply user defined style, though defining styles for complexes dataset is a daring undertaking.
 
+
 ## PDF standard
-Support of PDF/2 or PDF/A? No, open source library available. See [PDFlib][].  Not possible in the client
+
+What PDF version? Support of PDF/2 or PDF/A? No, open source library available. See [PDFlib][]. Most client-side libraries are PDF 1.3 (Acrobat 4.x) capable.
+
 
 ## Legacy client
+
 For some legacy client, we must eventually also provide raster tiles (from vector layer)?
+
 
 ## Vector style definition
 
@@ -331,50 +357,73 @@ How are the styles for vector layer defined? Where? And how it is applied?
 
 Currently, all style are defined in Mapserver's [Mapfile definition](https://github.com/geoadmin/wms-mapfile_include).
 
+
 ## Complexe symbols
 
 Especially complexe labels placement is hard (what to render, at what scale, collision avoidance)
+
 
 ## Mashup
 
 Maps should be mashed up with other sorts of infos (diagram, plot, data tables)
 
+
 ## Movie
+
 Zeitreise, Fly along path, etc.
+
 
 ## Compute power
 
 Externalize compute power on client or not?
 
+
 ## Performance
+
 Synchronous or asynchronous printing
 
+
 ## WYSIWIG
+
 Symbol scaling, which LK to use, grid display, etc.
 
+
 ## Grid
+
 Grid for various projection system
+
 
 ## Projection issue
 
-One selling point of vector tiles and 3D is that 2D in only a special case when pitch is 0 (or 90°). But the 3D world is a WGS1984 only world, which translate in the infamous [Equirectangular (or plate carrée)projection ](http://proj4.org/projections/eqc.html).
+One selling point of vector tiles and 3D is that 2D in only a special case when pitch is 0 (or 90?). But the 3D world is a WGS1984 only world, which translate in the infamous [Equirectangular (or plate carr?e)projection ](http://proj4.org/projections/eqc.html).
 Using the same projection for printing as in the browser (projection of the data, target projection). When using a Webmercator, deformation, scale, with LK
+
 
 ## Rasterize as a data protection tool
 
 Rasterizing vector data was also a way to _protect_ the more valuable original vector datasets (_e.g._WMS).
 
+
 ## Export to other format
+
 Only PDF, os as image
 
+
 ## Use on smartphone and tablet
+Client only priting on small scale and/or less powerfull devices is challenging to get nice printed results.
 
 ## Printing API
+
 Provinding an API for 3rd party
+
 
 ## Multiserver use, autoscaling, etc.
 
+Most print server are meant to run on a single machine.
+
+
 ## KMZ with local file
+
 
 ## GeoPDF
 
@@ -548,9 +597,26 @@ it makes no sense to print above 300dpi for instance.
 Table:  Relation between paper size (mm) and image size (pixels). _dpi_ (dot per inch)
 
 
+Device             Screen (in)  PPI
+----------------   -----------  ----
+iphone 5S (2013)    4.0         325
+iphone 6 (2014)     4.7         325
+iphone 6s (2014)    4.7         325
+iphone 7 (2016)     4.7         325
+ipad (2017)         9.7         263
+iphone 8 (2017)     5.5         400
+ipad pro (2017)     12.9        264
+galaxy S8 (2017)    6.2         530
+iphone X (2017)     5.8         462
+galaxy S9 (2018)    5.8         567
+
+Table: PPI for some smartphone and tablets
+
+
+
 ##### Conserving the scale
 
-The next three images have the same spatial extent (2500 meters wide), but have different sizes. If we want to keep the scale, here 1:25'000, we have to print an image of 100mm, regardless of the size of the image. The result is a low quality for samller image.
+The next three images have the same spatial extent (2500 meters wide), but have different sizes. If we want to keep the scale, here 1:25'000, we have to print the image of 100mm, regardless of the pixels of the image. The result is a low quality for smaller images.
 
 
 *Image of 377x188 pixels, printed @96 dpi (100x50mm)*
@@ -567,8 +633,7 @@ The next three images have the same spatial extent (2500 meters wide), but have 
 
 ##### Conserving the print resolution
 
-The next three images have the same spatial extent (2500 meters wide), but have different sizes. In this example, we kee a good print quality (300 dpi), so we have to print .
-The result is loosing the original map scale of 1:25'000.
+The next three images have the same spatial extent (2500 meters wide), but have different sizes. In this example, we want to keep a good print quality (300 dpi), so we have to decrease the size of the final printed image. The result is loosing the original map scale of 1:25'000.
 
 *Image of 377x188 pixels, printed @300 dpi (32x16 mm), print scale is about 1:78'125*
 
@@ -613,13 +678,22 @@ compressed with `ps2pdf`. Five repetitions for each methods.
 
 Compression          Time (s)       PDF (bytes)    Size (%)
 -------------      -----------     -------------  ---------
-NONE                 6.99 ± 0.10     29363689       100%
-FAST                 8.84 ± 0.08     11978739        40.8%
-MEDIUM              11.61 ± 0.41     11282507        38.4%
-SLOW                67.91 ± 2.37     10469602        35.6%
-ps2pdf              < 1s              1227882         4.18%
+NONE                 6.99 ? 0.10     29363689       100.0
+FAST                 8.84 ? 0.08     11978739        40.8
+MEDIUM              11.61 ? 0.41     11282507        38.4
+SLOW                67.91 ? 2.37     10469602        35.6
+ps2pdf              < 0.5             1227882         4.18
 
 
+Another example with an image targeted for 150 dpi 3'609'601 bytes(pk25.noscale-1635-1122-@150.png)
+
+Compression          Time (s)       PDF (bytes)    Size (%)
+-------------      -----------     -------------  ---------
+NONE                 2.01 ? 0.07     7341071       100.0
+FAST                 2.91 ? 0.20     3554307        48.4
+MEDIUM               3.69 ? 0.35     3465019        47.2
+SLOW                12.33 ? 2.24     3290648        44.8
+ps2pdf               < 0.25           400244         5.4
 
 
 #### Templating
@@ -665,10 +739,19 @@ Conclusion
 ==========
 
 
+
+
+
+[map.geo.admin.ch]: https://map.geo.admin.ch
+
 [Print-CSS]: https://print-css.rocks/
 
-[PDF.js]: https://mozilla.github.io/pdf.js/
 [jsPDF]: https://parall.ax/products/jspdf
+[PDFkit]: http://pdfkit.org/
+[pdfmake]: http://pdfmake.org
+[printjs]: http://printjs.crabbly.com/
+[Bytescout's PDF Generator]: https://bytescout.com/products/developer/pdfgeneratorsdkjs/index.html
+[PDF.js]: https://mozilla.github.io/pdf.js/
 [PSPDFKit]: https://pspdfkit.com/pdf-sdk/web/
 
 [PDFreactor]: http://www.pdfreactor.com
