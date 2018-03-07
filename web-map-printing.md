@@ -122,7 +122,7 @@ What should be printed?
 
 Since its inception, maps have been decorated with more or less useful features.
 
-!["Îles du Levant - Portulan Benincase 1466 (BNF)"](img/659px-Île_du_Levant._Portulan._Benin‌casa._1466.png){width=250px}\
+!["Îles du Levant - Portulan Benincase 1466 (BNF)"](img/Ile_du_Levant_Portulan_Benincasa_1466.png){width=250px}\
 
 
 
