@@ -76,18 +76,35 @@ The swiss federal geoportal [map.geo.admin.ch](https://map.geo.admin.ch) uses a 
 
 ## Performances
 
+### Averall print jobs
+
 The 95th percentile for all print jobs are between 3.7 and 5.0 s (only time for generation, without download)
 
 !["90th, 95th and 99th percentile of created.json"](img/mf-v2-timegenerated-percentile.png){ width=250px }\
 
 https://kibana.bgdi.ch/goto/3566fae450682eea244826f2ec49e477
 
+Error rate: last month 1'082 errors for 97'988 success (about 1.09%)
+
+### Simple print job (cron)
+
 Printing a [standard A4 landscape page at 1:25'000](https://github.com/procrastinatio/mapfish-print-examples/blob/master/specs/lv95_versoix_25000_simple.json)
 
-Generation time (POST to response): 1.14 ± 0.19 s (n=256, every 5 minutes)
+Generation time (POST to json response): 1.21 ± 0.05 s (n=4578, every 5 minutes)
+
+Errors: 22 out of 4578 jobs (0.48%) 
 
 
-Error rate: last month 1'082 errors for 97'988 success (about 1.09%)
+
+### Pingdom
+
+Same spec file as above sent every 5 minutes from Pingdom
+
+692 ms average response time (time to get JSON response)
+1.17 s max response time
+7 outages totalising 35 minutes
+uptime 99.83%
+
 
 
 What is printing?
