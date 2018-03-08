@@ -597,18 +597,19 @@ it makes no sense to print above 300dpi for instance.
 Table:  Relation between paper size (mm) and image size (pixels). _dpi_ (dot per inch)
 
 
-Device             Screen (in)  PPI
-----------------   -----------  ----
-iphone 5S (2013)    4.0         325
-iphone 6 (2014)     4.7         325
-iphone 6s (2014)    4.7         325
-iphone 7 (2016)     4.7         325
-ipad (2017)         9.7         263
-iphone 8 (2017)     5.5         400
-ipad pro (2017)     12.9        264
-galaxy S8 (2017)    6.2         530
-iphone X (2017)     5.8         462
-galaxy S9 (2018)    5.8         567
+Device             Screen (in)  Resolution (px)   PPI
+----------------   -----------  ---------------   ---
+galaxy S8 (2017)    6.2         2960x1440         530
+galaxy S9 (2018)    5.8         2960x1440         567
+ipad (2017)         9.7         2048x1536         263
+ipad pro (2017)     12.9        2732x2048         264
+iphone 5S (2013)    4.0         1136x640          325
+iphone 6 (2014)     4.7         1334x750          325
+iphone 6s (2014)    4.7         1334x750          325
+iphone 7 (2016)     4.7         1334x750          325
+iphone 8 (2017)     5.5         1920x1080         400
+iphone X (2017)     5.8         2436x1125         462
+
 
 Table: PPI for some smartphone and tablets
 
