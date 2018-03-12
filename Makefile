@@ -25,6 +25,9 @@ else
 	curl -sSL https://get.haskellstack.org/ | sh
 endif
 
+data:
+	curl -L  -o tmp.zip https://qgis.org/downloads/data/training_manual_exercise_data.zip  && unzip tmp.zip  && rm tmp.zip
+
 packages:
 	sudo apt-get install texlive-math-extra  texlive-xetex  texlive-luatex fonts-noto fonts-noto-mono lmodern
 
@@ -34,12 +37,25 @@ setup: stack packages
 	&& cd $(TMPDIR) && tar xvzf $(PANDOC_ARCHIVE).tar.gz \
 	&& cd $(PANDOC_ARCHIVE) && $(STACK_VERSION) setup && nice -n15 stack install --test
 
-web-map-printing.pdf: README.md
-	$(PANDOC)  -f markdown   --pdf-engine=xelatex  \
-	-o "web-map-printing.pdf"  -V pandocversion="$(PANDOC_VERSION)" -V current_date="$(CURRENT_DATE)" -M date="$(CURRENT_DATE)" \
-	  -V fontsize=10pt  -V geometry:a4paper --variable classoption=onecolumn --variable papersize=a4paper  -V papersize:a4 --variable mainfont="Noto Serif"  "web-map-printing.md" 
+web-map-printing.pdf: web-map-printing.md
+	$(PANDOC)  --from markdown \
+	--listings \
+	--pdf-engine=xelatex \
+	--highlight-style pygments   \
+	--table-of-contents \
+	-o "web-map-printing.pdf"  \
+	-V pandocversion="$(PANDOC_VERSION)" \
+	-V current_date="$(CURRENT_DATE)" \
+	-M date="$(CURRENT_DATE)" \
+	-V fontsize=10pt  \
+	-V geometry:a4paper \
+	--variable classoption=onecolumn \
+	--variable papersize=a4paper \
+	-V papersize:a4 \
+	--variable mainfont="Noto Serif" \
+	"web-map-printing.md" 
 
 clean:
 	rm -f web-map-printing.pdf
 
-.PHONY: help clean setup stack packages
+.PHONY: help clean setup stack packages data

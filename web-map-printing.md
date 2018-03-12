@@ -3,7 +3,7 @@ title: "Web map printing solutions"
 subtitle:
     - Evaluating printing solution for web mapping application.
 lang: en
-keywords:  "web mapping, printing, pdf, canvas, webgl"
+keywords:  "web mapping, printing, pdf, canvas, webgl, openlayers, mapbox, mapserver, arcgis, mapfish"
 author:
    - Marc Monnerat
 
@@ -21,12 +21,12 @@ output:
 link-citations: true
     
 header-includes:
-  - \usepackage{xcolor}
+  - \usepackage{xcolor} 
   - \definecolor{foo}{HTML}{2A5DB0}
   - \hypersetup{colorlinks=false,
             colorlinks=true,
             linkcolor=blue,
-            filecolor=magenta,      
+            filecolor=magenta,
             urlcolor=foo,
             allbordercolors={0 0 0}, 
             pdfborderstyle={/S/U/W 1}} 
@@ -42,6 +42,8 @@ header-includes:
 
 _This document explores various alternatives for generating suitable document for printing to be used in a web mapping application. _
 
+
+The mother of all web mapping application
 
 !["XEROX Parc Map Viewer"](img/xerox_parc_map_viewer_june_1993.jpg){ width=250px }\
 
@@ -355,6 +357,98 @@ Need more testing...
 
 
 ### QGIS print
+
+
+#### QGIS Server
+
+One intresting aspect of QGis Server is that it may use QGis Desktop Project as a source of data.
+
+A simple project in QGis desktop...
+
+!["Project as seen in QGis desktop"](img/qgis-desktop-world-project.png){ width=100mm }\
+
+
+...and the same project served as a WMS image:
+
+!["Project as an OGC layer"](img/qgis-server-world-project.png){ width=100mm}\
+
+
+#### QGis print composer
+
+Qgis has an advanced [Print composer](https://docs.qgis.org/2.8/en/docs/user_manual/print_composer/print_composer.html) to generate image or PDF export. The composer may add many items to a composition:
+
+ * Map, inclusive grids, rotation,
+ * Labels
+ * Images, inclusive a north arrow
+ * Scalebar
+ * Legends
+ * Shapes and arrows
+ * Table items (attributes)
+ * HTML frame
+
+
+
+```python
+#!/usr/bin/env python 
+#-*- coding: utf-8 -*-
+
+import sys
+import os
+from qgis.core import (
+    QgsProject, QgsComposition, QgsApplication, QgsProviderRegistry, QgsComposerMap, QgsRectangle)
+from qgis.gui import QgsMapCanvas, QgsLayerTreeMapCanvasBridge
+from PyQt4.QtCore import QFileInfo
+from PyQt4.QtXml import QDomDocument
+
+gui_flag = True
+app = QgsApplication(sys.argv, gui_flag)
+app.setPrefixPath("/usr", True)
+
+dir_path = os.path.dirname(os.path.realpath(__file__))
+
+# Make sure QGIS_PREFIX_PATH is set in your env if needed!
+app.initQgis()
+
+project_path =  os.path.join(dir_path, 'data', 'world', 'world.qgs')
+template_path = os.path.join(dir_path, 'world.qpt')
+
+def make_pdf():
+    canvas = QgsMapCanvas()
+    # Load our project
+    QgsProject.instance().read(QFileInfo(project_path))
+    bridge = QgsLayerTreeMapCanvasBridge(
+        QgsProject.instance().layerTreeRoot(), canvas)
+    bridge.setCanvasLayers()
+
+    template_file = file(template_path)
+    template_content = template_file.read()
+    print template_content
+    template_file.close()
+    document = QDomDocument()
+    document.setContent(template_content)
+    composition = QgsComposition(canvas.mapSettings())
+
+    composition.loadFromTemplate(document, {})
+   
+    map_item = composition.getComposerMapById(0)
+    map_item.setMapCanvas(canvas)
+    
+
+    map_item.zoomToExtent(QgsRectangle(-6,39,16,51)) #canvas.extent())
+    # You must set the id in the template
+    legend_item = composition.getComposerItemById('legend')
+    legend_item.updateLegend()
+    composition.refreshItems()
+    composition.exportAsPDF('report.pdf')
+    QgsProject.instance().clear()
+
+
+make_pdf()
+```
+
+
+!["QGis composer"](img/qgis-composer.png){ width=100mm}\
+
 
 ### ArcGis print
 
