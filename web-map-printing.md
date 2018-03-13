@@ -43,7 +43,7 @@ header-includes:
 _This document explores various alternatives for generating suitable document for printing to be used in a web mapping application. _
 
 
-The mother of all web mapping application
+The mother of all web mapping application, in 1993
 
 !["XEROX Parc Map Viewer"](img/xerox_parc_map_viewer_june_1993.jpg){ width=250px }\
 
@@ -358,10 +358,12 @@ Need more testing...
 
 ### QGIS print
 
+Quantum GIS a fairly advanced print capability
+
 
 #### QGIS Server
 
-One intresting aspect of QGis Server is that it may use QGis Desktop Project as a source of data.
+One interesting aspect of QGis Server is that it may use QGis Desktop Project (.qgs file) as a source of data for server
 
 A simple project in QGis desktop...
 
@@ -386,7 +388,7 @@ Qgis has an advanced [Print composer](https://docs.qgis.org/2.8/en/docs/user_man
  * Table items (attributes)
  * HTML frame
 
-
+Code to print load a project and generate a PDF with a custom template
 
 ```python
 #!/usr/bin/env python 
@@ -395,7 +397,8 @@ Qgis has an advanced [Print composer](https://docs.qgis.org/2.8/en/docs/user_man
 import sys
 import os
 from qgis.core import (
-    QgsProject, QgsComposition, QgsApplication, QgsProviderRegistry, QgsComposerMap, QgsRectangle)
+    QgsProject, QgsComposition, QgsApplication, QgsProviderRegistry, 
+    QgsComposerMap, QgsRectangle)
 from qgis.gui import QgsMapCanvas, QgsLayerTreeMapCanvasBridge
 from PyQt4.QtCore import QFileInfo
 from PyQt4.QtXml import QDomDocument
@@ -434,7 +437,7 @@ def make_pdf():
     map_item.setMapCanvas(canvas)
     
 
-    map_item.zoomToExtent(QgsRectangle(-6,39,16,51)) #canvas.extent())
+    map_item.zoomToExtent(QgsRectangle(-6,39,16,51))
     # You must set the id in the template
     legend_item = composition.getComposerItemById('legend')
     legend_item.updateLegend()
@@ -445,59 +448,64 @@ def make_pdf():
 
 make_pdf()
 ```
-
-
-!["QGis composer"](img/qgis-composer.png){ width=100mm}\
+See !["QGis composer"](img/qgis-composer.png){ width=100mm}\
 
 
 ### ArcGis print
 
-ArcGIS Enterprise includes a geoprocessing service called PrintingTools. Web applications invoke the PrintingTools service and get a printable document in return (see [Printing in Web application][]):
+ArcGIS Enterprise includes a geoprocessing service called *PrintingTools*. Web applications invoke the *PrintingTools* service and get a printable document in return (see [Printing in Web application][]):
 
-
- 
+TODO: needs more investigation
 
 Other considerations
 ====================
 
 ## Scale and resolution
 
-Are scale and print quality of the result important? Difference in resolution may be important between screen and paper.
+* Is a simple image export enough?
+* Should it printed as a PDF, at a given size and/or resolution? What quality?
+* Is scale important? Difference in resolution may be important between screen and paper.
+
+## Plateform support
+
+Should not be an issue, as a 3D web application run only on quite recent web browser.
 
 
-## WebGL
+## WebGL/canvas
 
 
 ## Vectors in PDF
 
-Must vector layers rendered as vector or must be rasterized?
+PDF is basically a vector format. Must vector layers rendered as vector or must be rasterized?
 
 
-## Need for User defined style
+## Support for user defined style
 
 With vector data, it is easy to apply user defined style, though defining styles for complexes dataset is a daring undertaking.
 
 
 ## PDF standard
 
-What PDF version? Support of PDF/2 or PDF/A? No, open source library available. See [PDFlib][]. Most client-side libraries are PDF 1.3 (Acrobat 4.x) capable.
-
+* What PDF version?  Most client-side libraries are PDF 1.3 (Acrobat 4.x) capable.
+* Accessibility considerations?
+* Support of PDF/2, PDF/XPDF or PDF/A? No, open source library available. For Python, see [PDFlib][].
+* GeoPDF
 
 ## Legacy client
 
-For some legacy client, we must eventually also provide raster tiles (from vector layer)?
+For some legacy client, we must eventually also provide raster tiles (from vector layer)? Or anyway, as WMTS. This implies a solution for style management, which could be used for printing
 
 
 ## Vector style definition
 
-How are the styles for vector layer defined? Where? And how it is applied?
+How are the styles for vector layer defined? Where? And how it is applied? What standard. 
 
 Currently, all style are defined in Mapserver's [Mapfile definition](https://github.com/geoadmin/wms-mapfile_include).
 
 
 ## Complexe symbols
 
-Especially complexe labels placement is hard (what to render, at what scale, collision avoidance)
+Especially complexe labels placement is hard (what to render, at what scale, collision avoidance). Advanced label placement is done server-side.
 
 
 ## Mashup
@@ -508,6 +516,8 @@ Maps should be mashed up with other sorts of infos (diagram, plot, data tables)
 ## Movie
 
 Zeitreise, Fly along path, etc.
+Large PDF files?
+
 
 
 ## Compute power
@@ -517,7 +527,7 @@ Externalize compute power on client or not?
 
 ## Performance
 
-Synchronous or asynchronous printing
+Synchronous or asynchronous printing (server-side printing)
 
 
 ## WYSIWIG
@@ -527,7 +537,7 @@ Symbol scaling, which LK to use, grid display, etc.
 
 ## Grid
 
-Grid for various projection system
+Grid for various projection system.
 
 
 ## Projection issue
@@ -560,11 +570,12 @@ Provinding an API for 3rd party
 
 Most print server are meant to run on a single machine.
 
+## Local data
 
-## KMZ with local file
+Files added to project with drag-n-drop
 
 
-## GeoPDF
+
 
 
 Approaches
@@ -870,9 +881,10 @@ As both client and server are using the same configuration, printing may be done
 
 
 
-
 Discussion
 ==========
+
+swisstopo Print Flex
 
 
 Conclusion

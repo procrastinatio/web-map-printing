@@ -41,7 +41,7 @@ web-map-printing.pdf: web-map-printing.md
 	$(PANDOC)  --from markdown \
 	--listings \
 	--pdf-engine=xelatex \
-	--highlight-style pygments   \
+	--highlight-style espresso  \
 	--table-of-contents \
 	-o "web-map-printing.pdf"  \
 	-V pandocversion="$(PANDOC_VERSION)" \
