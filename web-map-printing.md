@@ -350,6 +350,8 @@ The project is a Java based servlet/library/application based on the mature [Jas
 
 The [Geoserver Printing Module][] allows easy hosting of the Mapfish printing service within a GeoServer instance. The Mapfish printing module provides an HTTP API for printing that is useful within JavaScript mapping applications. User interface components for interacting with the print service are available from the Mapfish and GeoExt projects.
 
+
+
 Integrated print tools
 ----------------------
 
@@ -575,8 +577,47 @@ Most print server are meant to run on a single machine.
 Files added to project with drag-n-drop
 
 
+Leading web map application
+===========================
 
 
+Bing
+----
+
+[Bings Maps][]
+
+<Ctrl-P> is not supported   
+
+!["Bing, via ctrl-P"](img/Bing-ctrl-P.png){ width=100mm}\
+
+
+!["Bings, via print menu"](img/Bing-print.png){ width=100mm}\
+
+Yandex
+------
+
+[Yandex Maps][]
+
+Via <ctrl-P> or print buttom. Preview in new tab. Possibility to change page size and orientation
+
+!["Yandex print"](img/Yandex-print.png){ width=100mm}\
+
+
+Google Map
+----------
+
+[Google Maps][]
+
+Printing via <Ctrl-P>,possibility to add a title
+
+!["Google print"](img/Google-print.png){ width=100mm}\
+
+Here
+-----
+
+[Here][]
+
+----
 
 Approaches
 ==========
@@ -940,6 +981,11 @@ Conclusion
 [QGis Print Composer]: https://docs.qgis.org/testing/en/docs/user_manual/print_composer/overview_composer.html
 [Webkit]: https://webkit.org/
 [XSL-FO]: https://www.w3.org/TR/xsl/
+
+[Here]: https://wego.here.com
+[Google Maps]: https://maps.google.ch
+[Yandex Maps]: https://yandex.ru/maps
+[Bings Maps]: https://maps.bings.com
 
 **Colophon**
 
