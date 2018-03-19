@@ -1,7 +1,7 @@
 SHELL := /bin/bash
 
 TMPDIR := .build_artefacts
-PANDOC ?= /home/ltmom/.local/bin/pandoc
+PANDOC ?= $HOME/.local/bin/pandoc
 STACK_VERSION := $(shell command -v stack 2> /dev/null)
 CURRENT_DATE := $(shell date +%Y-%m-%d%n)
 PANDOC_VERSION := $(shell $(PANDOC) --version | head -1)
@@ -25,6 +25,13 @@ else
 	curl -sSL https://get.haskellstack.org/ | sh
 endif
 
+
+eisvogel:
+	[ -d ${TMPDIR} ] || mkdir $(TMPDIR) && cd $(TMPDIR) && \
+	[ -d pandoc-latex-template ] ||	git clone https://github.com/Wandmalfarbe/pandoc-latex-template.git && \
+	mkdir -p ${HOME}/.pandoc/templates/ && \
+	cp pandoc-latex-template/eisvogel.tex ${HOME}/.pandoc/templates/eisvogel.latex
+
 data:
 	curl -L  -o tmp.zip https://qgis.org/downloads/data/training_manual_exercise_data.zip  && unzip tmp.zip  && rm tmp.zip
 
@@ -41,18 +48,14 @@ web-map-printing.pdf: web-map-printing.md
 	$(PANDOC)  --from markdown \
 	--listings \
 	--pdf-engine=xelatex \
-	--highlight-style espresso  \
 	--table-of-contents \
 	-o "web-map-printing.pdf"  \
 	-V pandocversion="$(PANDOC_VERSION)" \
 	-V current_date="$(CURRENT_DATE)" \
 	-M date="$(CURRENT_DATE)" \
-	-V fontsize=10pt  \
 	-V geometry:a4paper \
-	--variable classoption=onecolumn \
-	--variable papersize=a4paper \
 	-V papersize:a4 \
-	--variable mainfont="Noto Serif" \
+	--template eisvogel \
 	"web-map-printing.md" 
 
 clean:
