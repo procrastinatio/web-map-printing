@@ -553,6 +553,8 @@ MEDIUM              11.61 ? 0.41     11282507        38.4
 SLOW                67.91 ? 2.37     10469602        35.6
 ps2pdf              < 0.5             1227882         4.18
 
+Table: Time needed to compress an image at 300 dpi
+
 
 Another example with an image targeted for 150 dpi 3'609'601 bytes(pk25.noscale-1635-1122-@150.png)
 
@@ -564,6 +566,7 @@ MEDIUM               3.69 ? 0.35     3465019        47.2
 SLOW                12.33 ? 2.24     3290648        44.8
 ps2pdf               < 0.25           400244         5.4
 
+Table: Time needed to compress an image at 150 dpi
 
 
 #### Templating
@@ -602,6 +605,10 @@ Challenges:
 #### PhantomJS (WebKit based)
 
 * No WebGL support
+
+####  Headless Chrome
+
+* 
 
 #### Print services
 
@@ -654,7 +661,7 @@ Vector and raster maps with GL styles. Server side rendering by Mapbox GL Native
 
 [Creating PDF Cartographic Output](https://knowledge.safe.com/articles/31335/creating-pdf-cartographic-output-2016.html)
 
-The [Adobe Geospatial PDF Reader/Writer](http://docs.safe.com/fme/html/FME_Desktop_Documentation/FME_ReadersWriters/pdf2d/pdf2d.htm) allows FME to read and write Adobe® Portable Document Format (PDF) with vector drawings and geospatial information.
+The [Adobe Geospatial PDF Reader/Writer](http://docs.safe.com/fme/html/FME_Desktop_Documentation/FME_ReadersWriters/pdf2d/pdf2d.htm) allows FME to read and write Adobe?? Portable Document Format (PDF) with vector drawings and geospatial information.
 
 
 ### Other tools
@@ -810,6 +817,31 @@ TODO: needs more investigation
 Discussion
 ==========
 
+
+
+Parameter                  Image export       Ctr-P         Export+HTML/PDF                Server-side
+---------                  ------------       -----         ---------------                -----------
+WYSIWIG                     +                  +/-              +/-                           +/-
+Scale conservation          -                  -                +                             +
+Resolution                  +/-                -                +/-                           +
+Plateform                   +                  -                +                             ++
+PDF                         0                  0                +/-                           ++ (if $$)
+Movie                       -                  -                -                             +
+Vector export               0                  0                -/+ (?)                       +
+Legacy/low end              +                  +/-              +/-                           +
+Mashup                      0                  +/-              +                             ++
+User style                  ++                 ++               ++                            +
+3D                          ++                 ++               +/-                           +/-
+
+Table: Summary of features
+
+Parameter                  Image export       Ctr-P         Export+HTML/PDF                Server-side
+---------                  ------------       -----         ---------------                -----------
+External computer power     ++                 ++               ++                            --
+Development effort          ++                  +               +/-                           ++
+Time to result              +                   +               +/-                           +/-
+
+Table: Summary for adminsitration
 
 ## Scale and resolution
 

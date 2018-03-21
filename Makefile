@@ -1,7 +1,7 @@
 SHELL := /bin/bash
 
 TMPDIR := .build_artefacts
-PANDOC ?= $HOME/.local/bin/pandoc
+PANDOC ?= ${HOME}/.local/bin/pandoc
 STACK_VERSION := $(shell command -v stack 2> /dev/null)
 CURRENT_DATE := $(shell date +%Y-%m-%d%n)
 PANDOC_VERSION := $(shell $(PANDOC) --version | head -1)
@@ -36,7 +36,7 @@ data:
 	curl -L  -o tmp.zip https://qgis.org/downloads/data/training_manual_exercise_data.zip  && unzip tmp.zip  && rm tmp.zip
 
 packages:
-	sudo apt-get install texlive-math-extra  texlive-xetex  texlive-luatex fonts-noto fonts-noto-mono lmodern
+	sudo apt-get install texlive-math-extra  texlive-fonts-extra texlive-xetex  texlive-luatex fonts-noto fonts-noto-mono lmodern
 
 setup: stack packages
 	mkdir -p $(TMPDIR) &&  \
