@@ -608,7 +608,9 @@ Challenges:
 
 ####  Headless Chrome
 
-* 
+[Getting Started with Headless Chrome](https://developers.google.com/web/updates/2017/04/headless-chrome)
+
+[Chromedriver](https://sites.google.com/a/chromium.org/chromedriver/home)
 
 #### Print services
 
