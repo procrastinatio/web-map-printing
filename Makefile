@@ -6,6 +6,7 @@ STACK_VERSION := $(shell command -v stack 2> /dev/null)
 CURRENT_DATE := $(shell date +%Y-%m-%d%n)
 PANDOC_VERSION := $(shell $(PANDOC) --version | head -1)
 PANDOC_ARCHIVE := pandoc-2.1.2
+NODE_VERSION := $(shell nodejs -v)
 
 
 help:
@@ -14,6 +15,7 @@ help:
 	@echo "STACK_VERSION                       $(STACK_VERSION)"
 	@echo "PANDOC                              $(PANDOC)"
 	@echo "PANDOC_VERSION                      $(PANDOC_VERSION)"
+	@echo "NODE_VERSION                        $(NODE_VERSION)"
 
 doc: web-map-printing.pdf
 
@@ -24,6 +26,15 @@ ifdef STACK_VERSION
 else
 	curl -sSL https://get.haskellstack.org/ | sh
 endif
+
+
+chrome:
+	sudo apt-get install chromium-chromedriver  python-selenium
+
+puppeteer:
+	curl -sL https://deb.nodesource.com/setup_9.x -o nodesource_setup.sh &&
+	sudo bash nodesource_setup.sh &&  npm i --save puppeteer
+
 
 
 eisvogel:
