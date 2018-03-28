@@ -1025,12 +1025,11 @@ Conclusion
 
 **Colophon**
 
-This document was created with [pandoc](http://pandoc.org), with the following commands:
+This document was created with [pandoc](http://pandoc.org) and [eisvogel](https://github.com/Wandmalfarbe/pandoc-latex-template), with the following commands:
    
 
     $ pandoc -f markdown --latex-engine=xelatex   --number-sections \ 
-      --variable mainfont="Gentium"   -V fontsize=10pt   "README.md" \
-      --toc -o "web-map-printing.pdf"
+      --template eisvogel  "web-map-printing.md" --toc -o "web-map-printing.pdf"
 
 
 
