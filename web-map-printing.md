@@ -285,7 +285,65 @@ Printing via <Ctrl-P>,possibility to add a title
 [Here][]
 
 
+### CalTopo
 
+[Caltopo][]
+
+
+
+[Print to Geospatial PDF](img/caltopo.pdf)
+
+!["Caltopo print"](img/caltopo-print.png){ width=100mm}\
+
+
+```bash
+gdalinfo img/caltopo.pdf
+
+Driver: PDF/Geospatial PDF
+Files: img/caltopo.pdf
+Size is 2338, 1654
+Coordinate System is:
+PROJCS["WGS 84 / World Mercator",
+    GEOGCS["WGS 84",
+        DATUM["WGS_1984",
+            SPHEROID["WGS 84",6378137,298.257223563,
+                AUTHORITY["EPSG","7030"]],
+            AUTHORITY["EPSG","6326"]],
+        PRIMEM["Greenwich",0,
+            AUTHORITY["EPSG","8901"]],
+        UNIT["degree",0.01745329251994328,
+            AUTHORITY["EPSG","9122"]],
+        AUTHORITY["EPSG","4326"]],
+    UNIT["metre",1,
+        AUTHORITY["EPSG","9001"]],
+    PROJECTION["Mercator_1SP"],
+    PARAMETER["central_meridian",0],
+    PARAMETER["scale_factor",1],
+    PARAMETER["false_easting",0],
+    PARAMETER["false_northing",0],
+    AUTHORITY["EPSG","3395"],
+    AXIS["Easting",EAST],
+    AXIS["Northing",NORTH]]
+Origin = (739770.531363048939966,5963816.915579564869404)
+Pixel Size = (93.015211288114500,-92.730207471186560)
+Metadata:
+  DPI=200
+  NEATLINE=POLYGON ((751397.432875239 5835941.9567583,751397.432875239 5952112.28762264,945437.500334236 5952112.28762264,945437.500334236 5835941.9567583,751397.432875239 5835941.9567583))
+  PRODUCER=CalTopo
+Corner Coordinates:
+Upper Left  (  739770.531, 5963816.916) (  6d38'43.70"E, 47d19'29.16"N)
+Lower Left  (  739770.531, 5810441.152) (  6d38'43.70"E, 46d22'46.49"N)
+Upper Right (  957240.095, 5963816.916) (  8d35'56.52"E, 47d19'29.16"N)
+Lower Right (  957240.095, 5810441.152) (  8d35'56.52"E, 46d22'46.49"N)
+Center      (  848505.313, 5887129.034) (  7d37'20.11"E, 46d51'15.36"N)
+Band 1 Block=2338x1 Type=Byte, ColorInterp=Red
+  Mask Flags: PER_DATASET ALPHA 
+Band 2 Block=2338x1 Type=Byte, ColorInterp=Green
+  Mask Flags: PER_DATASET ALPHA 
+Band 3 Block=2338x1 Type=Byte, ColorInterp=Blue
+  Mask Flags: PER_DATASET ALPHA 
+Band 4 Block=2338x1 Type=Byte, ColorInterp=Alpha
+```
 
 
 Approaches
@@ -1019,6 +1077,7 @@ Conclusion
 [Google Maps]: https://maps.google.ch
 [Yandex Maps]: https://yandex.ru/maps
 [Bings Maps]: https://maps.bings.com
+[Caltopo]: https://caltopo.com/map.html
 
 
 [PDF/A - ISO 19005 (PDF for Archiving)]: https://www.iso.org/standard/38920.html
