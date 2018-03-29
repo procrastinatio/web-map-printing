@@ -346,6 +346,13 @@ Band 4 Block=2338x1 Type=Byte, ColorInterp=Alpha
 ```
 
 
+### MangoMap
+
+[MangoMap][]
+
+[MangoMap generated PDF(pdfs/Fire Districts - Interactive Web Map.pdf)
+
+
 Approaches
 ==========
 
@@ -892,6 +899,7 @@ Legacy/low end              +                  +/-              +/-             
 Mashup                      0                  +/-              +                             ++
 User style                  ++                 ++               ++                            +
 3D                          ++                 ++               +/-                           +/-
+Side-by-side comaprison     ++                 ++               ++                            --
 
 Table: Summary of features
 
@@ -1078,6 +1086,7 @@ Conclusion
 [Yandex Maps]: https://yandex.ru/maps
 [Bings Maps]: https://maps.bings.com
 [Caltopo]: https://caltopo.com/map.html
+[MangoMap]: https://mangomap.com/
 
 
 [PDF/A - ISO 19005 (PDF for Archiving)]: https://www.iso.org/standard/38920.html
