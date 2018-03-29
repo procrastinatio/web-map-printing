@@ -32,8 +32,9 @@ chrome:
 	sudo apt-get install chromium-chromedriver  python-selenium
 
 puppeteer:
-	curl -sL https://deb.nodesource.com/setup_9.x -o nodesource_setup.sh &&
-	sudo bash nodesource_setup.sh &&  npm i --save puppeteer
+	curl -sL https://deb.nodesource.com/setup_9.x -o nodesource_setup.sh && \
+	sudo bash nodesource_setup.sh &&  sudo apt-get install nodejs -y && \
+	npm i --save puppeteer
 
 
 
