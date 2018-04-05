@@ -737,7 +737,79 @@ The [Adobe Geospatial PDF Reader/Writer](http://docs.safe.com/fme/html/FME_Deskt
 
 #### OWSlib
 
+#### GDAL/OGR
 
+[Geospatial PDF](http://www.gdal.org/frmt_pdf.html)
+[GDAL][]
+
+Background data
+
+```xml
+<GDAL_WMS>
+  <Service name="WMS">
+      <Version>1.1.1</Version>
+    <ServerUrl>https://wms.swisstopo.admin.ch</ServerUrl>
+    <SRS>EPSG:2056</SRS>
+     <ImageFormat>image/jpeg</ImageFormat>
+     <Layers>ch.swisstopo.pixelkarte-farbe</Layers>
+      <Styles></Styles>
+  </Service>
+  
+   <DataWindow>	
+        <UpperLeftX>2420000</UpperLeftX>	
+        <UpperLeftY>1350000</UpperLeftY>	
+        <LowerRightX>2900000</LowerRightX>	
+        <LowerRightY>1030000</LowerRightY>	
+        <SizeX>480000</SizeX>
+        <SizeY>320000</SizeY>	
+    </DataWindow>
+  <Projection>EPSG:2056</Projection>
+  <AdviseRead>false</AdviseRead>
+  <VerifyAdviseRead>false</VerifyAdviseRead>
+  <UserPwd>kamou.lox:******</UserPwd>
+</GDAL_WMS>
+```
+Vector data
+
+```xml
+<OGRVRTDataSource>
+  <OGRVRTLayer name="bln">
+      <SrcDataSource>PG:host=pg-0.****.ch user=***** dbname=bafu_dev password=w****</SrcDataSource>
+      <SrcLayer>bundinv.bln_v2</SrcLayer>
+      <SrcSQL>SELECT *, bln_name as name, linkurldescription as link, 
+              'BRUSH(fc:#0000FF55);PEN(c:#00000088);LABEL(c:#0000FF, dx:-10, dy:10, s:32px, t:{name})' as OGR_STYLE 
+              from bundinv.bln_v2</SrcSQL>
+      <Field name="name"/>
+      <Field name="link"/>
+  </OGRVRTLayer>
+</OGRVRTDataSource>
+```
+
+Geospatial PDF generation with `gdal`
+
+```bash
+/opt/bin/gdal_translate -of PDF -tr 400 400  \
+  -projwin 2450000 1350000 2900000 1050000  \
+  -projwin_srs epsg:2056 \
+  -co OGR_DISPLAY_FIELD="name"  \
+  -co LAYER_NAME="Carte swisstopo" \
+  -co OGR_DISPLAY_LAYER_NAMES="Inventaire BLN" \
+  -co DPI=$DPI \
+  -co OGR_LINK_FIELD=link  \
+  -co COMPRESS=DEFLATE \
+  --config GDAL_PDF_DPI $DPI  \
+  -co EXTRA_IMAGES=Arrow_05.jpeg,10,10,0.1 \
+  -co EXTRA_LAYER_NAME="decorations"  \
+  -co AUTHOR="Marc Monnerat" \
+  -co CREATOR="gdal_translate" \
+  -co CREATION_DATE=D:YYYYMMDDHHmmSSOHH'mm' \
+  -co KEYWORDS="swisstopo, GDAL, geospatial PDF" \
+  -co PRODUCER="$(/opt/bin/ogrinfo --version)" \
+  -co SUBJECT="" -co TITLE="Geospatial PDF with swisstopo data" \
+  -co OGR_DATASOURCE=bafu.vrt   swisstopo_wms.xml swisstopo.pdf 
+```
+
+[GDAL - Feature Style Specification](http://www.gdal.org/ogr_feature_style.html)
 
 Print server
 ------------
@@ -1058,6 +1130,7 @@ Conclusion
 [OL-Cesium]: http://openlayers.org/ol-cesium/
 
 [Tileserver GL]: http://tileserver.org/
+[GDAL]: http://www.gdal.org
 
 [OSM]: https://www.openstreetmap.org/ "OpenStreetMap"
 [Mapserver]: http://mapserver.org/
